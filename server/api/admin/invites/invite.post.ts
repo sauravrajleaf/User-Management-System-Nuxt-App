@@ -9,9 +9,9 @@ import { Users } from "../../../dbModels";
 interface IRequestBody {
 	email: string;
 	name: string;
-	channelsAccess: [];
-	inviteStatus: String;
-	channelPermissions: String;
+	channelsAccess: string[];
+	inviteStatus: string;
+	channelPermissions: string;
 }
 
 export default defineEventHandler(async (e) => {

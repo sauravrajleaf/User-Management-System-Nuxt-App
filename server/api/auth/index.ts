@@ -9,6 +9,11 @@ export default defineEventHandler(async (e) => {
 		return usersData.map((user) => ({
 			id: user._id,
 			name: user.name,
+			email: user.email,
+			channelsAccess: user.channelsAccess,
+			channelPermissions: user.channelPermissions,
+			inviteStatus: user.inviteStatus,
+			isAdmin: user.isAdmin,
 		}));
 	} catch (err) {
 		console.dir(err);

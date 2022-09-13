@@ -1,21 +1,26 @@
-import { Users } from "../../dbModels";
+// Edit users channels access or permissions access(edit or delete);
+import { Users } from "../../../dbModels";
+
 interface IRequestBody {
-	password: string;
-	inviteStatus: string;
+	channelsAccess: string[];
+	channelPermissions: string;
 }
+
 export default defineEventHandler(async (e) => {
-	//REGISTER A NEW USER
 	const userId = e.context.params.id;
-	console.log(`PUT /api/auth/${userId}`);
-	const { password, inviteStatus } = await useBody<IRequestBody>(e);
-	console.log(password, inviteStatus);
+	console.log(`PUT api/admin/invites/${userId}`);
+
+	const { channelsAccess, channelPermissions } = await useBody<IRequestBody>(e);
+
+	console.log(channelsAccess, channelPermissions);
+
 	const userFields = {
-		password,
-		inviteStatus,
+		channelsAccess,
+		channelPermissions,
 	};
 
-	userFields.password = password;
-	userFields.inviteStatus = inviteStatus;
+	userFields.channelsAccess = channelsAccess;
+	userFields.channelPermissions = channelPermissions;
 
 	try {
 		let user = await Users.findById(userId);
@@ -27,7 +32,7 @@ export default defineEventHandler(async (e) => {
 				message: "User with given email does not exists.",
 			};
 		} else {
-			console.log("Set user password");
+			console.log("Edit user permissions");
 			const user = await Users.findByIdAndUpdate(
 				userId,
 				{ $set: userFields },

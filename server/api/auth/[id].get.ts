@@ -14,6 +14,11 @@ export default defineEventHandler(async (e) => {
 			return {
 				id: userData._id,
 				name: userData.name,
+				email: userData.email,
+				channelsAccess: userData.channelsAccess,
+				channelPermissions: userData.channelPermissions,
+				inviteStatus: userData.inviteStatus,
+				isAdmin: userData.isAdmin,
 			};
 		} else {
 			console.log("User not found");

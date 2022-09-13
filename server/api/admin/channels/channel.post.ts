@@ -1,9 +1,9 @@
 import { Channels, Users } from "../../../dbModels";
 
 interface IRequestBody {
-	users: [];
+	users: string[];
 	name: string;
-	channeldata: [];
+	channeldata: string[];
 }
 
 export default defineEventHandler(async (e) => {

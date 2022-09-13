@@ -1,11 +1,5 @@
 import { Channels } from "../../../dbModels";
 
-interface IRequestBody {
-	users: [];
-	name: string;
-	channeldata: [];
-}
-
 export default defineEventHandler(async (e) => {
 	//CREATE A CHANNEL
 	console.log("DELETE /api/admin/channels/:id");
