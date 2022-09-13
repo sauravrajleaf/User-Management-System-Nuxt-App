@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "mongoose": "^6.5.4",
+    "mongoose-bcrypt": "^1.10.0",
+    "nuxt": "3.0.0-rc.9"
+  }
+}
