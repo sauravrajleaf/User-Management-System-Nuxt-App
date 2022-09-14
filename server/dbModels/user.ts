@@ -4,10 +4,18 @@ import mongoose from "mongoose";
 import bcrypt from "mongoose-bcrypt";
 const UserSchema = new mongoose.Schema(
 	{
+		channels: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "channels",
+		},
 		name: { type: String },
 		email: { type: String, unique: true },
 		password: { type: String, bcrypt: true },
-		channelsAccess: {
+		channelAccessIDs: {
+			type: Array,
+			// required: true,
+		},
+		channelAccessNames: {
 			type: Array,
 			// required: true,
 		},

@@ -5,11 +5,13 @@
 // 3. USER CHANNELS ACCESS ( A, B, C,...)
 // 4. USER CHANNEL PERMISSIONS (EDIT OR DELETE OR BOTH)
 
-import { Users } from "../../../dbModels";
+import { Users, Channels } from "../../../dbModels";
+
 interface IRequestBody {
 	email: string;
 	name: string;
-	channelsAccess: string[];
+	channelAccessIDs: string[];
+	channelAccessNames: string[];
 	inviteStatus: string;
 	channelPermissions: string;
 }
@@ -17,13 +19,26 @@ interface IRequestBody {
 export default defineEventHandler(async (e) => {
 	//INVITE A NEW USER
 	console.log("POST /api/admin/invites/invite");
-	const { email, name, channelsAccess, inviteStatus, channelPermissions } =
-		await useBody<IRequestBody>(e);
-	console.log(channelsAccess, inviteStatus, channelPermissions);
+	const {
+		email,
+		name,
+		channelAccessIDs,
+		inviteStatus,
+		channelPermissions,
+		channelAccessNames,
+	} = await useBody<IRequestBody>(e);
+	console.log(
+		channelAccessIDs,
+		inviteStatus,
+		channelPermissions,
+		channelAccessNames
+	);
 	try {
 		const userData = await Users.findOne({
 			email,
 		});
+		const channels = await Channels.find();
+		console.log(channels);
 		if (userData) {
 			console.log(`User with email ${email} already exists`);
 			e.res.statusCode = 409;
@@ -35,17 +50,19 @@ export default defineEventHandler(async (e) => {
 			console.log("Invite User");
 			const newUserData = await Users.create({
 				email,
-				channelsAccess,
+				channelAccessIDs,
 				name,
 				inviteStatus,
 				channelPermissions,
+				channelAccessNames,
 			});
 			return {
 				id: newUserData._id,
 				name: newUserData.name,
-				channelsAccess: newUserData.channelsAccess,
+				channelAccessIDs: newUserData.channelAccessIDs,
 				inviteStatus: newUserData.inviteStatus,
 				channelPermissions: newUserData.channelPermissions,
+				channelAccessNames: newUserData.channelAccessNames,
 			};
 		}
 	} catch (err) {

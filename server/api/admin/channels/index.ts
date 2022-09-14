@@ -11,8 +11,6 @@ export default defineEventHandler(async (e) => {
 		return allChannels.map((channel) => ({
 			id: channel._id,
 			name: channel.name,
-			channeldata: channel.channeldata,
-			users: channel.users,
 		}));
 	} catch (err) {
 		console.dir(err);

@@ -12,7 +12,8 @@ export default defineEventHandler(async (e) => {
 			name: invite.name,
 			email: invite.email,
 			inviteStatus: invite.inviteStatus,
-			channelsAccess: invite.channelsAccess,
+			channelAccessIDs: invite.channelAccessIDs,
+			channelAccessNames: invite.channelAccessNames,
 			channelPermission: invite.channelPermissions,
 		}));
 	} catch (err) {
