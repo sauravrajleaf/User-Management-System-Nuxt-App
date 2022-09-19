@@ -1,13 +1,17 @@
 import { Users } from "../../dbModels";
-export default defineEventHandler(async (e) => {
-	//FIND A REGISTERED USER BY USER ID
+import authMiddleware from "../../middleware/authMiddleware";
 
+export default defineEventHandler(async (e) => {
+	//FIND A REGISTERED USER BY JWT TOKEN
 	const userId = e.context.params.id;
 	console.log(`GET /api/auth/${userId}`);
+	console.log("asadad");
+	console.log(e.context.auth.id);
+
 	try {
 		console.log("Find user");
 		const userData = await Users.findOne({
-			_id: userId,
+			_id: e.context.auth.id,
 		});
 		if (userData) {
 			console.log("User found");
