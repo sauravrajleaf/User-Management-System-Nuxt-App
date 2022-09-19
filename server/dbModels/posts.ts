@@ -1,14 +1,14 @@
 //USER SCHEMA MODEL
 
 import mongoose from "mongoose";
-const UserSchema = new mongoose.Schema(
+const PostSchema = new mongoose.Schema(
 	{
-		channels: {
+		channel: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: "channels",
+			ref: "Channels",
 		},
 		channelData: [],
 	},
 	{ timestamps: true, strict: true, strictQuery: true }
 );
-export default mongoose.model("posts", UserSchema);
+export default mongoose.model("posts", PostSchema);

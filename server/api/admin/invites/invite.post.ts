@@ -10,29 +10,15 @@ import { Users, Channels } from "../../../dbModels";
 interface IRequestBody {
 	email: string;
 	name: string;
-	channelAccessIDs: string[];
-	channelAccessNames: string[];
 	inviteStatus: string;
-	channelPermissions: string;
 }
 
 export default defineEventHandler(async (e) => {
 	//INVITE A NEW USER
+	// console.log(e.req.user);
 	console.log("POST /api/admin/invites/invite");
-	const {
-		email,
-		name,
-		channelAccessIDs,
-		inviteStatus,
-		channelPermissions,
-		channelAccessNames,
-	} = await useBody<IRequestBody>(e);
-	console.log(
-		channelAccessIDs,
-		inviteStatus,
-		channelPermissions,
-		channelAccessNames
-	);
+	const { email, name, inviteStatus } = await useBody<IRequestBody>(e);
+	console.log(inviteStatus);
 	try {
 		const userData = await Users.findOne({
 			email,
@@ -50,19 +36,13 @@ export default defineEventHandler(async (e) => {
 			console.log("Invite User");
 			const newUserData = await Users.create({
 				email,
-				channelAccessIDs,
 				name,
 				inviteStatus,
-				channelPermissions,
-				channelAccessNames,
 			});
 			return {
 				id: newUserData._id,
 				name: newUserData.name,
-				channelAccessIDs: newUserData.channelAccessIDs,
 				inviteStatus: newUserData.inviteStatus,
-				channelPermissions: newUserData.channelPermissions,
-				channelAccessNames: newUserData.channelAccessNames,
 			};
 		}
 	} catch (err) {

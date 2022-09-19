@@ -1,4 +1,6 @@
+import generateToken from "../../../plugins/generateToken";
 import { Users } from "../../dbModels";
+
 interface IRequestBody {
 	email: string;
 	password: string;
@@ -33,6 +35,7 @@ export default defineEventHandler(async (e) => {
 				return {
 					id: userData._id,
 					name: userData.name,
+					token: generateToken(userData._id),
 				};
 			} else {
 				console.log("Password is not valid");

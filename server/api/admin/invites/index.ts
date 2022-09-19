@@ -9,12 +9,10 @@ export default defineEventHandler(async (e) => {
 
 		//return all users created by the admin
 		return allInvites.map((invite) => ({
+			channels: invite.channels,
 			name: invite.name,
 			email: invite.email,
 			inviteStatus: invite.inviteStatus,
-			channelAccessIDs: invite.channelAccessIDs,
-			channelAccessNames: invite.channelAccessNames,
-			channelPermission: invite.channelPermissions,
 		}));
 	} catch (err) {
 		console.error(err);
