@@ -7,9 +7,19 @@ export default defineEventHandler(async (e) => {
 	// console.log(`GET /api/auth/${userId}`);
 
 	try {
-		console.log("Find user");
 		const userId = await middlewareFunction(e);
-		console.log(e.req.headers);
+		console.log(userId);
+
+		if ((e.res.statusCode = 401 && e.req.headers.authentication == null)) {
+			e.res.statusCode = 401;
+			return { msg: "No token, authorization denied" };
+		}
+
+		if (userId == false) {
+			e.res.statusCode = 401;
+			return { msg: "Token is not valid" };
+		}
+		console.log("Find user");
 
 		const userData = await Users.findOne({
 			_id: userId,
