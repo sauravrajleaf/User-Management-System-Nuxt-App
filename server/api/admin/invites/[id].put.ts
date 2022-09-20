@@ -2,29 +2,22 @@
 import { Users } from "../../../dbModels";
 
 interface IRequestBody {
-	channelAccessIDs: string[];
-	channelPermissions: string;
-	channelAccessNames: string[];
+	channels: object[];
 }
 
 export default defineEventHandler(async (e) => {
 	const userId = e.context.params.id;
 	console.log(`PUT api/admin/invites/${userId}`);
 
-	const { channelAccessIDs, channelPermissions, channelAccessNames } =
-		await useBody<IRequestBody>(e);
+	const { channels } = await useBody<IRequestBody>(e);
 
-	console.log(channelAccessIDs, channelPermissions, channelAccessNames);
+	console.log(channels);
 
 	const userFields = {
-		channelAccessIDs,
-		channelPermissions,
-		channelAccessNames,
+		channels,
 	};
 
-	userFields.channelAccessIDs = channelAccessIDs;
-	userFields.channelPermissions = channelPermissions;
-	userFields.channelAccessNames = channelAccessNames;
+	userFields.channels = channels;
 
 	try {
 		let user = await Users.findById(userId);

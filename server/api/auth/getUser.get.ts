@@ -5,8 +5,7 @@ export default defineEventHandler(async (e) => {
 	//FIND A REGISTERED USER BY JWT TOKEN
 	const userId = e.context.params.id;
 	console.log(`GET /api/auth/${userId}`);
-	console.log("asadad");
-	console.log(e.context.auth.id);
+	// console.log(e.context.auth.id);
 
 	try {
 		console.log("Find user");
@@ -20,6 +19,7 @@ export default defineEventHandler(async (e) => {
 				name: userData.name,
 				email: userData.email,
 				inviteStatus: userData.inviteStatus,
+				channels: userData.channels,
 				isAdmin: userData.isAdmin,
 			};
 		} else {

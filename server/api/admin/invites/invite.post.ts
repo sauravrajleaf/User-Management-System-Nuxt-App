@@ -8,6 +8,7 @@
 import { Users, Channels } from "../../../dbModels";
 
 interface IRequestBody {
+	channels: object[];
 	email: string;
 	name: string;
 	inviteStatus: string;
@@ -17,14 +18,16 @@ export default defineEventHandler(async (e) => {
 	//INVITE A NEW USER
 	// console.log(e.req.user);
 	console.log("POST /api/admin/invites/invite");
-	const { email, name, inviteStatus } = await useBody<IRequestBody>(e);
+	const { email, name, inviteStatus, channels } = await useBody<IRequestBody>(
+		e
+	);
 	console.log(inviteStatus);
 	try {
 		const userData = await Users.findOne({
 			email,
 		});
-		const channels = await Channels.find();
-		console.log(channels);
+		// const channels = await Channels.find();
+		// console.log(channels);
 		if (userData) {
 			console.log(`User with email ${email} already exists`);
 			e.res.statusCode = 409;
@@ -38,11 +41,13 @@ export default defineEventHandler(async (e) => {
 				email,
 				name,
 				inviteStatus,
+				channels,
 			});
 			return {
 				id: newUserData._id,
 				name: newUserData.name,
 				inviteStatus: newUserData.inviteStatus,
+				channels: newUserData.channels,
 			};
 		}
 	} catch (err) {
