@@ -27,7 +27,9 @@ export default defineEventHandler(async (e) => {
 			return { msg: "Token is not valid" };
 		}
 		const allPosts = await Posts.find();
-		const channelPosts = allPosts.filter((post) => post.channel == channelId);
+		const channelPosts = allPosts.filter(
+			(post) => post.channel == channelId && post.user == userId
+		);
 		return {
 			channelPosts,
 		};
