@@ -10,7 +10,7 @@ export default defineEventHandler(async (e) => {
 		const userId = await middlewareFunction(e);
 		console.log(userId);
 
-		if ((e.res.statusCode = 401 && e.req.headers.authentication == null)) {
+		if (e.req.headers.authentication == null) {
 			e.res.statusCode = 401;
 			return { msg: "No token, authorization denied" };
 		}

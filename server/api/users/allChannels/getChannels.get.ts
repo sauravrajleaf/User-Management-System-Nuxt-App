@@ -1,15 +1,28 @@
 import { Users } from "../../../dbModels";
+import middlewareFunction from "../../../utils/middlewareFunction";
 
 export default defineEventHandler(async (e) => {
-	//FIND A REGISTERED Channel BY JWT TOKEN
+	//GET ALL CHANNELS OF A USER
 	// const userId = e.context.params.id;
 	// console.log(`GET /api/auth/${userId}`);
-	// console.log(e.context.auth.id);
+	// console.log(userId);
 
 	try {
+		const userId = await middlewareFunction(e);
+		console.log(userId);
+
+		if (e.req.headers.authentication == null) {
+			e.res.statusCode = 401;
+			return { msg: "No token, authorization denied" };
+		}
+
+		if (userId == false) {
+			e.res.statusCode = 401;
+			return { msg: "Token is not valid" };
+		}
 		console.log("Find user");
 		const userData = await Users.findOne({
-			_id: e.context.auth.id,
+			_id: userId,
 		});
 		if (userData) {
 			console.log("User found");
