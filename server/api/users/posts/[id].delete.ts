@@ -2,10 +2,9 @@ import { Posts } from "../../../dbModels";
 import middlewareFunction from "../../../utils/middlewareFunction";
 
 export default defineEventHandler(async (e) => {
-	//GET ALL POSTS OF A USER OF A CHANNEL
-
-	const channelId = e.context.params.id;
-	console.log(`GET /api/users/posts/${channelId}`);
+	//IF THE USER HAS EDIT OR ALL PERMISSIONS THEN THE USER CAN EDIT THE POSTS
+	const postId = e.context.params.id;
+	console.log(`DELETE /api/user/posts/${postId}`);
 
 	try {
 		const userId = await middlewareFunction(e);
@@ -15,17 +14,19 @@ export default defineEventHandler(async (e) => {
 			e.res.statusCode = 401;
 			return { msg: "No token, authorization denied" };
 		}
-
-		if (userId == false) {
+		let post = await Posts.findById(postId);
+		if (!post) return { msg: "Post not found" };
+		console.log(post.user);
+		if (post.user != userId) {
 			e.res.statusCode = 401;
-			return { msg: "Token is not valid" };
+			return { msg: "Token is not valid! Unauthorised" };
 		}
-		const allPosts = await Posts.find();
-		const channelPosts = allPosts.filter(
-			(post) => post.channel == channelId && post.user == userId
-		);
+
+		post = await Posts.findByIdAndRemove(postId);
+
 		return {
-			channelPosts,
+			code: "SUCCESS",
+			message: "Channel is removed",
 		};
 	} catch (err) {
 		console.dir(err);

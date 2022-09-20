@@ -6,7 +6,7 @@ interface IRequestBody {
 
 export default defineEventHandler(async (e) => {
 	//CREATE A CHANNEL
-	console.log("post /api/admin/channels/channel/:id");
+	console.log("POST /api/admin/channels/channel/:id");
 	const channelId = e.context.params.id;
 	console.log(`CHANNEL ID ${channelId}`);
 	const { name } = await useBody<IRequestBody>(e);
