@@ -1,4 +1,4 @@
-import generateToken from "../../../plugins/generateToken";
+import generateToken from "../../plugins/generateToken";
 import { Users } from "../../dbModels";
 
 interface IRequestBody {

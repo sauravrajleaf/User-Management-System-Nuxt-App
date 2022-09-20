@@ -1,8 +1,7 @@
 import { Users } from "../../../dbModels";
-import authMiddleware from "../../../middleware/authMiddleware";
 
 export default defineEventHandler(async (e) => {
-	//FIND A REGISTERED USER BY JWT TOKEN
+	//FIND A REGISTERED Channel BY JWT TOKEN
 	// const userId = e.context.params.id;
 	// console.log(`GET /api/auth/${userId}`);
 	// console.log(e.context.auth.id);

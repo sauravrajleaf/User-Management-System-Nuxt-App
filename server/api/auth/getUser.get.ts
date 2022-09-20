@@ -1,15 +1,18 @@
 import { Users } from "../../dbModels";
+import middlewareFunction from "../../utils/middlewareFunction";
 
 export default defineEventHandler(async (e) => {
 	//FIND A REGISTERED USER BY JWT TOKEN
 	// const userId = e.context.params.id;
 	// console.log(`GET /api/auth/${userId}`);
-	// console.log(e.context.auth.id);
 
 	try {
 		console.log("Find user");
+		const userId = await middlewareFunction(e);
+		console.log(e.req.headers);
+
 		const userData = await Users.findOne({
-			_id: e.context.auth.id,
+			_id: userId,
 		});
 		if (userData) {
 			console.log("User found");

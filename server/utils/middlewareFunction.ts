@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import { Users } from "../dbModels";
 
 export default defineEventHandler(async (e) => {
 	if (!e.req.headers.authentication) {
@@ -12,6 +11,7 @@ export default defineEventHandler(async (e) => {
 			id: await jwt.verify(e.req.headers.authentication, process.env.JWT_SECRET)
 				.id,
 		};
+		return e.context.auth.id;
 	} catch (err) {
 		e.res.statusCode = 401;
 		return { msg: "Token is not valid" };
