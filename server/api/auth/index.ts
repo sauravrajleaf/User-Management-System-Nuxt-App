@@ -10,9 +10,7 @@ export default defineEventHandler(async (e) => {
 			id: user._id,
 			name: user.name,
 			email: user.email,
-			channelAccessIDs: user.channelAccessIDs,
-			channelAccessNames: user.channelAccessNames,
-			channelPermissions: user.channelPermissions,
+			channels: user.channels,
 			inviteStatus: user.inviteStatus,
 			isAdmin: user.isAdmin,
 		}));

@@ -1,10 +1,9 @@
 import { Users } from "../../dbModels";
-import authMiddleware from "../../middleware/authMiddleware";
 
 export default defineEventHandler(async (e) => {
 	//FIND A REGISTERED USER BY JWT TOKEN
-	const userId = e.context.params.id;
-	console.log(`GET /api/auth/${userId}`);
+	// const userId = e.context.params.id;
+	// console.log(`GET /api/auth/${userId}`);
 	// console.log(e.context.auth.id);
 
 	try {
@@ -27,7 +26,7 @@ export default defineEventHandler(async (e) => {
 			e.res.statusCode = 404;
 			return {
 				code: "USER_NOT_FOUND",
-				message: `User with id ${userId} doesn't exists.`,
+				message: `User with id  doesn't exists.`,
 			};
 		}
 	} catch (err) {

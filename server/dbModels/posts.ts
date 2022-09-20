@@ -8,6 +8,10 @@ const PostSchema = new mongoose.Schema(
 			ref: "Channels",
 		},
 		channelData: [],
+		user: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Users",
+		},
 	},
 	{ timestamps: true, strict: true, strictQuery: true }
 );

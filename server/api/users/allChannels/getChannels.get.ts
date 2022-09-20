@@ -1,31 +1,28 @@
-// GET ALL THE CHANNELS THE USER HAS ACCESS TO
-// DASHBOARD PAGE
-
 import { Users } from "../../../dbModels";
+import authMiddleware from "../../../middleware/authMiddleware";
 
 export default defineEventHandler(async (e) => {
-	const userId = e.context.params.id;
-
-	console.log(`GET api/myChannels/${userId}`);
+	//FIND A REGISTERED USER BY JWT TOKEN
+	// const userId = e.context.params.id;
+	// console.log(`GET /api/auth/${userId}`);
+	// console.log(e.context.auth.id);
 
 	try {
 		console.log("Find user");
 		const userData = await Users.findOne({
-			_id: userId,
+			_id: e.context.auth.id,
 		});
 		if (userData) {
 			console.log("User found");
 			return {
-				channelAccessNames: userData.channelAccessNames,
-				channelAccessIDs: userData.channelAccessIDs,
-				channelPermissions: userData.channelPermissions,
+				channels: userData.channels,
 			};
 		} else {
 			console.log("User not found");
 			e.res.statusCode = 404;
 			return {
 				code: "USER_NOT_FOUND",
-				message: `User with id ${userId} doesn't exists.`,
+				message: `User with id  doesn't exists.`,
 			};
 		}
 	} catch (err) {
