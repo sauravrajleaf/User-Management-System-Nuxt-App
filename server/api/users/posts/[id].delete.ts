@@ -19,7 +19,7 @@ export default defineEventHandler(async (e) => {
 		console.log(post.user);
 		if (post.user != userId) {
 			e.res.statusCode = 401;
-			return { msg: "Token is not valid! Unauthorised" };
+			return { msg: "User is not valid! Unauthorised" };
 		}
 
 		post = await Posts.findByIdAndRemove(postId);

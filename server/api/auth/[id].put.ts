@@ -1,4 +1,6 @@
 import { Users } from "../../dbModels";
+import generateToken from "../../plugins/generateToken";
+
 interface IRequestBody {
 	password: string;
 	inviteStatus: string;
@@ -33,7 +35,8 @@ export default defineEventHandler(async (e) => {
 				{ $set: userFields },
 				{ new: true }
 			);
-			return user;
+
+			return { user, token: generateToken(userId) };
 		}
 	} catch (err) {
 		console.dir(err);

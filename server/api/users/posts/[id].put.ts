@@ -9,7 +9,7 @@ export default defineEventHandler(async (e) => {
 	//IF THE USER HAS EDIT OR ALL PERMISSIONS THEN THE USER CAN EDIT THE POSTS
 	const postId = e.context.params.id;
 	console.log(`PUT /api/user/posts/updatePost/${postId}`);
-
+	console.log(e.request.user);
 	try {
 		const userId = await middlewareFunction(e);
 		console.log(userId);
@@ -21,7 +21,7 @@ export default defineEventHandler(async (e) => {
 		let post = await Posts.findById(postId);
 		if (post.user != userId) {
 			e.res.statusCode = 401;
-			return { msg: "Token is not valid! Unauthorised" };
+			return { msg: "User is not valid! Unauthorised" };
 		}
 
 		const { channelData } = await useBody<IRequestBody>(e);
