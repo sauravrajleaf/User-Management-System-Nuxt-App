@@ -4,6 +4,7 @@ import middlewareFunction from "../../../utils/middlewareFunction";
 export default defineEventHandler(async (e) => {
 	//GET ALL POSTS OF A USER OF A CHANNEL
 
+	//CHECK CHANNEL ACCESS TO WHICH THE USER IS POSTING
 	const channelId = e.context.params.id;
 	console.log(`GET /api/users/posts/${channelId}`);
 

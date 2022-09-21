@@ -1,5 +1,6 @@
 // Edit users channels access or permissions access(edit or delete);
 import { Users } from "../../../dbModels";
+import middlewareFunction from "../../../utils/middlewareFunction";
 
 interface IRequestBody {
 	channels: object[];
@@ -20,6 +21,9 @@ export default defineEventHandler(async (e) => {
 	userFields.channels = channels;
 
 	try {
+		const userId = await middlewareFunction(e);
+		// console.log(userId);
+
 		let user = await Users.findById(userId);
 
 		if (!user) {

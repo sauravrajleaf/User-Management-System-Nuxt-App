@@ -1,4 +1,4 @@
-import { Posts } from "../../../dbModels";
+import { Posts, Users } from "../../../dbModels";
 import middlewareFunction from "../../../utils/middlewareFunction";
 
 interface IRequestBody {
@@ -10,12 +10,10 @@ interface IRequestBody {
 export default defineEventHandler(async (e) => {
 	//CREATE A POST ON A CHANNEL
 	// console.log(e.context);
+
 	const channelId = e.context.params.id;
 	console.log(`POST /api/users/posts/${channelId}`);
-	// const userData = await Users.findOne({
-	// 	_id: e.context.auth.id,
-	// });
-	// console.log(userData);
+
 	const { channelData } = await useBody<IRequestBody>(e);
 	// console.log(channelData);
 	try {
@@ -31,6 +29,24 @@ export default defineEventHandler(async (e) => {
 			return { msg: "Token is not valid" };
 		}
 
+		const userData = await Users.findById(userId);
+		console.log(userData);
+		let allowedChannels = userData.channels.map((channel) => ({
+			id: channel.channelId,
+		}));
+		console.log(allowedChannels);
+		const values = [];
+		for (let item of allowedChannels) {
+			values.push(item.id?.toString());
+		}
+		console.log(values);
+		const isAllowed = values.includes(channelId);
+
+		if (!isAllowed) {
+			e.res.statusCode = 401;
+			return { msg: "Not authorized to this channel, access denied" };
+		}
+		console.log(isAllowed);
 		const newPost = await Posts.create({
 			channel: channelId,
 			user: userId,

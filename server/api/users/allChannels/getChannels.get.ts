@@ -29,6 +29,9 @@ export default defineEventHandler(async (e) => {
 			return {
 				channels: userData.channels,
 			};
+			// return userData.channels.map((channel) => ({
+			// 	channelId: channel.channelId,
+			// }));
 		} else {
 			console.log("User not found");
 			e.res.statusCode = 404;
