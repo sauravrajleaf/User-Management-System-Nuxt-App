@@ -30,16 +30,16 @@ export default defineEventHandler(async (e) => {
 		}
 
 		const userData = await Users.findById(userId);
-		console.log(userData);
+		// console.log(userData);
 		let allowedChannels = userData.channels.map((channel) => ({
 			id: channel.channelId,
 		}));
-		console.log(allowedChannels);
+		// console.log(allowedChannels);
 		const values = [];
 		for (let item of allowedChannels) {
 			values.push(item.id?.toString());
 		}
-		console.log(values);
+		// console.log(values);
 		const isAllowed = values.includes(channelId);
 
 		if (!isAllowed) {

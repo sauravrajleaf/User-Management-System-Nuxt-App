@@ -1,22 +1,40 @@
-//Delete a user from the database
+//DELETE A USER FROM THE DATABASE
+
 import { Users } from "../../../dbModels";
+import middlewareFunction from "../../../utils/middlewareFunction";
+import authRole from "../../../utils/authRole";
 
 export default defineEventHandler(async (e) => {
-	//CREATE A CHANNEL
 	console.log("DELETE /api/admin/invites/:id");
-	const userId = e.context.params.id;
-	console.log(`CHANNEL ID ${userId}`);
+	const editUserId = e.context.params.id;
+	console.log(`DELETE User ID ${editUserId}`);
 	try {
-		let user = await Users.findById(userId);
-		if (!user) return { msg: "Channel Not Found" };
+		const userId = await middlewareFunction(e);
+		// console.log(userId);
 
-		user = await Users.findByIdAndRemove(userId);
-		return {
-			code: "SUCCESS",
-			message: `User ${userId} is removed`,
-		};
+		if (e.req.headers.authentication == null) {
+			e.res.statusCode = 401;
+			return { msg: "No token, authorization denied" };
+		}
+		if (userId == false) {
+			e.res.statusCode = 401;
+			return { msg: "Token is not valid" };
+		}
 
-		// return channel;
+		if (await authRole(userId)) {
+			let user = await Users.findById(editUserId);
+			if (!user) return { msg: "User Not Found" };
+
+			user = await Users.findByIdAndRemove(editUserId);
+			return {
+				code: "SUCCESS",
+				message: `User ${editUserId} is removed`,
+			};
+		} else {
+			e.res.statusCode = 401;
+			return { msg: "Unauthorized! Only admins allowed.Token is not valid" };
+		}
+		// return User;
 	} catch (err) {
 		console.dir(err);
 		e.res.statusCode = 500;

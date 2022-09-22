@@ -19,6 +19,7 @@ export default defineEventHandler(async (e) => {
 			e.res.statusCode = 401;
 			return { msg: "Token is not valid" };
 		}
+
 		console.log("Find user");
 
 		const userData = await Users.findOne({

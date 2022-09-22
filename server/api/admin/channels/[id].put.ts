@@ -1,4 +1,6 @@
 import { Channels, Users } from "../../../dbModels";
+import middlewareFunction from "../../../utils/middlewareFunction";
+import authRole from "../../../utils/authRole";
 
 interface IRequestBody {
 	name: string;
@@ -17,16 +19,36 @@ export default defineEventHandler(async (e) => {
 	if (name) channelFields.name = name;
 
 	try {
-		let channel = await Channels.findById(channelId);
-		if (!channel) return e.res.status(404).json({ msg: "Channel Not Found" });
+		const userId = await middlewareFunction(e);
+		// console.log(userId);
 
-		channel = await Channels.findByIdAndUpdate(
-			channelId,
-			{ $set: channelFields },
-			{ new: true }
-		);
+		if (e.req.headers.authentication == null) {
+			e.res.statusCode = 401;
+			return { msg: "No token, authorization denied" };
+		}
+		if (userId == false) {
+			e.res.statusCode = 401;
+			return { msg: "Token is not valid" };
+		}
 
-		return channel;
+		if (await authRole(userId)) {
+			let channel = await Channels.findById(channelId);
+			if (!channel) {
+				e.res.statusCode = 404;
+				return { msg: "Channel Not Found" };
+			}
+
+			channel = await Channels.findByIdAndUpdate(
+				channelId,
+				{ $set: channelFields },
+				{ new: true }
+			);
+
+			return channel;
+		} else {
+			e.res.statusCode = 401;
+			return { msg: "Unauthorized! Only admins allowed.Token is not valid" };
+		}
 	} catch (err) {
 		console.dir(err);
 		e.res.statusCode = 500;
