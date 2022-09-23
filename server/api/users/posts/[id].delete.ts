@@ -43,7 +43,7 @@ export default defineEventHandler(async (e) => {
 			}
 			// console.log(allowedChannels[i].id, post?.channel);
 		}
-		console.log(matchedChannel);
+		// console.log(matchedChannel);
 
 		if (
 			matchedChannel?.channelPermissions === "all" ||
@@ -56,7 +56,7 @@ export default defineEventHandler(async (e) => {
 				message: "Post is removed",
 			};
 		} else {
-			e.res.statusCode = 401;
+			e.res.statusCode = 403;
 			return { msg: "Deleting permissions not allowed, access denied" };
 		}
 	} catch (err) {
